@@ -1,0 +1,20 @@
+name: culqi_flutter
+description: Una librería que implementa el proceso de creación de token en Culqi
+version: 1.0.0
+author: Pablo Rafael Cruz López <pablocruz9988@gmail.com>
+homepage: https://github.com/gucodero/culqi_flutter
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  email_validator: '^1.0.0'
+  http: ^0.12.0+4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
