@@ -12,22 +12,44 @@ class CCard {
   String email;
 
   CCard({ String cardNumber = '', this.cvv = '', this.expirationMonth = 0, this.expirationYear = 0, this.email = ''}){
-    this._cardNumber = cardNumber.replaceAll(' ', '');
+    this._cardNumber = cardNumber;
   }
   
   String get cardNumber {
-    return _cardNumber;
+    return _cardNumber.replaceAll(' ', '');
   }
 
   set cardNumber(String value){
-    _cardNumber = value.replaceAll(' ', '');
+    _cardNumber = value;
+  }
+
+  String getFormattedCardNumber(int spacing){
+    String number = cardNumber;
+    List parts = List<String>();
+    bool finish = false;
+    for(int i = 1; i <= number.length; i++){
+      if(i % 4 == 0){
+        parts.add(number.substring(i-4, i));
+        finish = true;
+      }else{
+        finish = false;
+      }
+    }
+    if(!finish){
+      int part = number.length ~/ 4;
+      parts.add(number.substring(part*4));
+    }
+    String separator = '';
+    for(int i = 0; i < spacing; i++)
+      separator+=' ';
+    return parts.join(separator);
   }
 
   //luhn algorithm
   bool isCardNumberValid(){
-    int size = _cardNumber.length;
+    int size = cardNumber.length;
     //invertimos el numero de tarjeta
-    String cardNumberReverse = String.fromCharCodes(_cardNumber.runes.toList().reversed);
+    String cardNumberReverse = String.fromCharCodes(cardNumber.runes.toList().reversed);
     try{
       int.parse(cardNumber);
     }catch(_){
@@ -93,8 +115,15 @@ class CCard {
   }
 
   int getBrand(){
-    String card = _cardNumber.toString();
     
+    try{
+      int.parse(cardNumber);
+    }catch(_){
+      return ANY;
+    }
+
+    String card = cardNumber;
+
     if(card.length >= 3){
       int n = int.parse(card.substring(0,3));
       if((n >= 300 && n <= 305) || n == 309){

@@ -32,6 +32,3 @@ Future<CToken> createToken({@required CCard card,@required String apiKey}) async
         throw CulqiUnknownException(response.statusCode.toString(), response.body);
     }
 }
-
-
-
