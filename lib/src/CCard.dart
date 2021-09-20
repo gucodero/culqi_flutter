@@ -5,7 +5,7 @@ class CCard {
   static const int ANY = 0, VISA = 1, MASTER_CARD = 2, 
   DINERS_CLUB = 4, AMERICAN_EXPRESS = 5; 
 
-  String _cardNumber;
+  late String _cardNumber;
   String cvv;
   int expirationMonth;
   int expirationYear;

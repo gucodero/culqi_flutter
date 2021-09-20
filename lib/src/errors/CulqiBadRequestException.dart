@@ -2,11 +2,11 @@ import 'dart:convert';
 
 class CulqiBadRequestException implements Exception{
 
-  String type;
-  String code;
-  String cause;
-  String message;
-  String param;
+  String? type;
+  String? code;
+  String? cause;
+  String? message;
+  String? param;
 
   CulqiBadRequestException.fromJson(String json){
     Map<String, dynamic> data = jsonDecode(json);
