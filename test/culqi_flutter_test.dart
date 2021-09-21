@@ -110,38 +110,56 @@ void main() {
     expect(card.getBrand(), CCard.ANY);
   });
 
+  /**
+   * reference: https://docs.culqi.com/#/desarrollo/tarjetas
+   */
+
   String testApiKey = "sk_test_UTCQSGcXW8bCyU59";
 
-  test('Create Token', () async {
-    // Referencia de tarjetas de prueba:
-    // https://docs.culqi.com/#/desarrollo/tarjetas
-    // Caso exitoso:
-    CCard card = CCard(
-        cardNumber: '4111 1111 1111 1111',
-        expirationMonth: 09,
-        expirationYear: 25,
-        cvv: '123',
-        email: 'pablo@hotmail.com');
-    expect(await createToken(card: card, apiKey: testApiKey),
-        isInstanceOf<CToken>());
-    // Caso: sin correo
-    card = CCard(
+  /**
+   * Note:
+   * Change key to get expected results.
+   * The result that is achieved is: CulqiUnauthorizedException
+   */
+  test('Create token with successful result', () async {
+    var card = CCard(
+      cardNumber: '4111 1111 1111 1111',
+      expirationMonth: 09,
+      expirationYear: 25,
+      cvv: '123',
+      email: 'pablo@hotmail.com'
+    );
+    expect(
+      await createToken(card: card, apiKey: testApiKey), 
+      isA<CToken>()
+    );
+  });
+
+  test('Create card with error result - no email', () async {
+    var card = CCard(
       cardNumber: '4111 1111 1111 1111',
       expirationMonth: 09,
       expirationYear: 25,
       cvv: '123',
     );
-    expect(() async => await createToken(card: card, apiKey: testApiKey),
-        throwsA(isInstanceOf<CulqiBadRequestException>()));
-    // Caso: con tarjeta errada
-    card = CCard(
-        cardNumber: '4111 1111 1111',
-        expirationMonth: 09,
-        expirationYear: 22,
-        cvv: '123',
-        email: 'pablo@hotmail.com');
-    expect(() async => await createToken(card: card, apiKey: testApiKey),
-        throwsA(isInstanceOf<CulqiBadRequestException>()));
+    expect(
+      () async => await createToken(card: card, apiKey: testApiKey),
+      throwsA(isA<CulqiBadRequestException>())
+    );
+  });
+
+  test('Create card with error result - bad card', () async {
+    var card = CCard(
+      cardNumber: '4111 1111 1111',
+      expirationMonth: 09,
+      expirationYear: 22,
+      cvv: '123',
+      email: 'pablo@hotmail.com'
+    );
+    expect(
+      () async => await createToken(card: card, apiKey: testApiKey),
+      throwsA(isA<CulqiBadRequestException>())
+    );
   });
 
   test('Create token fail por tarjeta robada o perdida', () async {
