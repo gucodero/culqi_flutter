@@ -6,7 +6,7 @@ export 'src/errors/CulqiBadRequestException.dart';
 export 'src/errors/CulqiUnknownException.dart';
 
 import 'dart:convert';
-import 'dart:developer';
+import 'package:culqi_flutter/src/errors/CulqiUnauthorizedException.dart';
 import 'package:http/http.dart' as http;
 import 'package:culqi_flutter/src/CCard.dart';
 import 'package:culqi_flutter/src/CToken.dart';
@@ -30,6 +30,8 @@ Future<CToken> createToken(
       return CToken.fromJson(response.body);
     case 400:
       throw CulqiBadRequestException.fromJson(response.body);
+    case 401:
+      throw CulqiUnauthorizedException.fromJson(response.body);
     default:
       throw CulqiUnknownException(
           response.statusCode.toString(), response.body);
